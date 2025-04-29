@@ -6,14 +6,9 @@ import { authRoutes, userRoutes, qrCodeRoutes } from "./routes/index.js";
 
 const app = express();
 
-const allowedOrigins = Array.from(
-  { length: 11 },
-  (_, i) => `http://localhost:${5170 + i}`   // 5170-5180
-);
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "http://localhost:9000",
     credentials: true,
   })
 );
@@ -21,8 +16,8 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth",   authRoutes);
-app.use("/api/users",  userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/qrcodes", qrCodeRoutes);
 
 app.use(errorHandler);
