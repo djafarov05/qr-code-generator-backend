@@ -4,12 +4,12 @@ import {
   getUserProfile,
   updateUserProfile,
   deleteUserAccount,
-} from "../controllers/userController.js";
+} from "../controllers/index.js";
 
 const router = Router();
 
-router.get("/profile",  protect, getUserProfile);
-router.put("/profile",  protect, updateUserProfile);
+router.get("/profile", protect, getUserProfile);
+router.put("/profile", protect, updateUserProfile);
 router.delete("/delete", protect, deleteUserAccount);
 
 export default router;

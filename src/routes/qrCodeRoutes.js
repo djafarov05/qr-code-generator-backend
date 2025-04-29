@@ -1,20 +1,17 @@
 import { Router } from "express";
-import { protect } from "../middlewares/index.js";
 import {
   createQRCode,
   getMyQRCodes,
   updateQRCode,
   deleteQRCode,
-} from "../controllers/qrCodeController.js";
+} from "../controllers/index.js";
+import { protect } from "../middlewares/index.js";
 
 const router = Router();
 
-router.route("/")
-  .get(protect, getMyQRCodes)
-  .post(protect, createQRCode);
+router.use(protect);
 
-router.route("/:id")
-  .put(protect, updateQRCode)
-  .delete(protect, deleteQRCode);
+router.route("/").get(getMyQRCodes).post(createQRCode);
+router.route("/:id").put(updateQRCode).delete(deleteQRCode);
 
 export default router;

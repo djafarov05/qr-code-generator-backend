@@ -1,15 +1,14 @@
-import QRCode from "../models/qrCodeModel.js";
+import {
+  createQRCodeForUser,
+  getAllQRCodesForUser,
+  findQRCodeByIdForUser,
+  updateQRCodeLabel,
+  deleteQRCodeByInstance,
+} from "../services/index.js";
 
 export const createQRCode = async (req, res, next) => {
   try {
-    const { content, color, size, label } = req.body;
-    const qr = await QRCode.create({
-      userId: req.user.id,
-      content,
-      color,
-      size,
-      label,
-    });
+    const qr = await createQRCodeForUser(req.user.id, req.body);
     res.status(201).json(qr);
   } catch (e) {
     next(e);
@@ -18,10 +17,7 @@ export const createQRCode = async (req, res, next) => {
 
 export const getMyQRCodes = async (req, res, next) => {
   try {
-    const list = await QRCode.findAll({
-      where: { userId: req.user.id },
-      order: [["createdAt", "DESC"]],
-    });
+    const list = await getAllQRCodesForUser(req.user.id);
     res.json(list);
   } catch (e) {
     next(e);
@@ -30,12 +26,14 @@ export const getMyQRCodes = async (req, res, next) => {
 
 export const updateQRCode = async (req, res, next) => {
   try {
-    const { id }   = req.params;
-    const { label } = req.body; 
-    const qr = await QRCode.findOne({ where: { id, userId: req.user.id } });
+    const { id } = req.params;
+    const { label } = req.body;
+
+    const qr = await findQRCodeByIdForUser(id, req.user.id);
     if (!qr) return res.status(404).json({ message: "Not found" });
-    await qr.update({ label });
-    res.json(qr);
+
+    const updated = await updateQRCodeLabel(qr, label);
+    res.json(updated);
   } catch (e) {
     next(e);
   }
@@ -44,9 +42,11 @@ export const updateQRCode = async (req, res, next) => {
 export const deleteQRCode = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const qr = await QRCode.findOne({ where: { id, userId: req.user.id } });
+
+    const qr = await findQRCodeByIdForUser(id, req.user.id);
     if (!qr) return res.status(404).json({ message: "Not found" });
-    await qr.destroy();
+
+    await deleteQRCodeByInstance(qr);
     res.json({ message: "Deleted" });
   } catch (e) {
     next(e);

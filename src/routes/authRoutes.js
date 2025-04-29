@@ -1,28 +1,11 @@
-import express from 'express';
-import { body } from 'express-validator';
-import { registerUser, loginUser, logoutUser } from '../controllers/authController.js';
+import express from "express";
+import { registerUser, loginUser, logoutUser } from "../controllers/index.js";
+import { validateRegister, validateLogin } from "../middlewares/index.js";
 
 const router = express.Router();
 
-router.post(
-  '/register',
-  [
-    body('userName').trim().notEmpty().withMessage('User name is required'),
-    body('email').isEmail().withMessage('Valid e-mail is required'),
-    body('password').isLength({ min: 6 }).withMessage('Min 6 characters'),
-  ],
-  registerUser
-);
-
-router.post(
-  '/login',
-  [
-    body('email').isEmail(),
-    body('password').notEmpty(),
-  ],
-  loginUser
-);
-
-router.post('/logout', logoutUser);
+router.post("/register", validateRegister, registerUser);
+router.post("/login", validateLogin, loginUser);
+router.post("/logout", logoutUser);
 
 export default router;
