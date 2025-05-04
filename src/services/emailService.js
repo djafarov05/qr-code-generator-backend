@@ -1,16 +1,18 @@
 import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
+  host: "smtp.gmail.com",
+  port: 465,
   auth: {
-    user: process.env.MAILTRAP_USER,
-    pass: process.env.MAILTRAP_PASS,
+    user: process.env.GOOGLE_USER,
+    pass: process.env.GOOGLE_API_KEY,
   },
 });
 
 export const sendEmailWithQR = async ({ email, content, color, size }) => {
-  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(content)}&color=${color.replace("#", "")}`;
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(
+    content
+  )}&color=${color.replace("#", "")}`;
 
   await transporter.sendMail({
     from: '"QR Generator" <noreply@qrgenerator.com>',
@@ -19,7 +21,7 @@ export const sendEmailWithQR = async ({ email, content, color, size }) => {
     html: `
       <div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', sans-serif; background: #ffffff; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
         <div style="background-color: #4f46e5; padding: 20px; color: #ffffff;">
-          <h1 style="margin: 0; font-size: 24px;">🎉 Your QR Code is Ready!</h1>
+          <h1 style="margin: 0; font-size: 24px;">🎉 QR Code is Ready!</h1>
         </div>
 
         <div style="padding: 24px;">
@@ -54,4 +56,3 @@ export const sendEmailWithQR = async ({ email, content, color, size }) => {
     `,
   });
 };
-
