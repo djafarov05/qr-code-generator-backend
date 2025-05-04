@@ -21,7 +21,7 @@ export const sendEmailWithQR = async ({ email, content, color, size }) => {
     html: `
       <div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', sans-serif; background: #ffffff; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
         <div style="background-color: #4f46e5; padding: 20px; color: #ffffff;">
-          <h1 style="margin: 0; font-size: 24px;">🎉 QR Code is Ready!</h1>
+          <h1 style="margin: 0; font-size: 24px; text-align: center;">🎉 QR Code is Ready!</h1>
         </div>
 
         <div style="padding: 24px;">
